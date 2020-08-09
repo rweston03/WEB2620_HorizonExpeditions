@@ -1,0 +1,134 @@
+@import "variables";
+
+/**********************************************
+***************** CODE CITATION ***************
+I had difficulty getting Jumbotron to work with
+Bootstrap's carousel feature but remembered a
+technique for landing page carousels I'd learned
+in an online bootcamp project a couple years ago.
+The code has been refactored into SASS from CSS.
+***********************************************/
+
+#landing-header {
+    z-index: 1;
+    position: relative;
+    text-align: center;
+    padding-top: 30vh;
+
+    & .landing-wrapper {
+        background-color: rgba($drk-blue, .5);
+        padding: 1rem 0;
+    }
+
+    & h1,
+    & p {
+        color: #fff;
+        text-shadow: 2px 2px 3px black;
+    }
+    
+    & h1 {
+            font-size: 3rem; 
+        }
+        
+        & p {
+            font-size: 1rem;
+        }
+    
+    @media (min-width: 480px) {
+        padding-top: 35vh;
+        
+        & h1 {
+            font-size: 4rem; 
+        }
+        
+        & p {
+            font-size: 1.5rem;
+        }
+        
+    }
+    @media (min-width: 768px) {
+        
+        & h1 {
+            font-size: 6rem; 
+        }
+        
+        & p {
+            font-size: 2rem;
+        }
+    }
+}
+
+i {
+    &.fa {
+        font-size: 3rem;
+    }
+}
+
+@function background-img($indx) {
+    $img-array: ('../images/arctic1920x1280.jpg',
+            '../images/mongolia-horses1920x1280.jpg',
+            '../images/ukraine-chernobyl2-1920x1280.jpg',
+            '../images/antarctica-lights2-1920x1280.jpg',
+            '../images/ocean1920x1280.jpg');
+
+    @return nth($img-array, $indx);
+}
+
+@function calculate-delay($indx) {
+    @return (($indx - 1) * 10) + s;
+}
+
+%slideshow-position {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+
+.slideshow {
+    position: fixed;
+    @extend %slideshow-position;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    & li {
+        position: absolute;
+        @extend %slideshow-position;
+        background-size: cover;
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+        opacity: 0;
+        animation: imageAnimation 50s linear infinite;
+
+        @for $i from 1 through 5 {
+            $myVar: background-img($i);
+
+            &:nth-child(#{$i}) {
+                background-image: url(#{$myVar});
+                animation-delay: calculate-delay($i);
+            }
+        }
+    }
+}
+
+@keyframes imageAnimation {
+    0% {
+        opacity: 0;
+        animation-timing-function: ease-in;
+    }
+
+    10% {
+        opacity: 1;
+        animation-timing-function: ease-out;
+    }
+
+    20% {
+        opacity: 1
+    }
+
+    30% {
+        opacity: 0
+    }
+}
